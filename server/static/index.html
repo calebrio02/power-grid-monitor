@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POWER-GRID // INDUSTRIAL SKEUOMORPHIC TELEMETRY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* 1. Industrial Palette (Strict Light Mode) */
+      --bg-chassis: #e0e5ec;
+      --bg-panel: #eef2f7;
+      --bg-recessed: #d1d9e6;
+      --text-main: #2d3436;
+      --text-muted: #4a5568;
+      --text-dim: #718096;
+      
+      /* Safety Orange / Braun Red Accent */
+      --accent: #ff4757;
+      --accent-hover: #ff6b81;
+      --accent-fg: #ffffff;
+      
+      /* Neumorphic Shadow System (Consistent Top-Left 45deg light) */
+      --shadow-dark: #babecc;
+      --shadow-light: #ffffff;
+      --shadow-card: 8px 8px 16px #babecc, -8px -8px 16px #ffffff;
+      --shadow-floating: 12px 12px 24px #babecc, -12px -12px 24px #ffffff, inset 1px 1px 0 rgba(255, 255, 255, 0.6);
+      --shadow-recessed: inset 4px 4px 8px #babecc, inset -4px -4px 8px #ffffff;
+      --shadow-pressed: inset 6px 6px 12px #babecc, inset -6px -6px 12px #ffffff;
+      --shadow-pill: 4px 4px 8px #babecc, -4px -4px 8px #ffffff;
+      --shadow-pill-recessed: inset 2px 2px 5px #babecc, inset -2px -2px 5px #ffffff;
+      
+      /* CRT Screen & Dark Tech Bezels */
+      --screen-bezel: #1e2430;
+      --screen-bg: #0d1117;
+      
+      /* Typography */
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-chassis);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 60px;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.8) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(186, 190, 204, 0.3) 0%, transparent 40%);
+    }
+
+    /* Top Chassis Bar */
+    header {
+      background: var(--bg-chassis);
+      box-shadow: 0 4px 12px #babecc, 0 -1px 0 #ffffff;
+      padding: 18px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Tactile Physical Plate / Stamped Logo */
+    .brand-plate {
+      background: var(--accent);
+      color: var(--accent-fg);
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      letter-spacing: 1.5px;
+      box-shadow: 3px 3px 6px rgba(166, 50, 60, 0.4), -2px -2px 5px rgba(255, 120, 130, 0.4);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .brand-meta h1 {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      text-shadow: 0 1px 0 #ffffff;
+      line-height: 1.2;
+    }
+
+    .brand-meta p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Header Controls & Status Lights */
+    .header-nodes {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .tactile-badge {
+      background: var(--bg-chassis);
+      box-shadow: var(--shadow-pill);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* LED Physical Indicators */
+    .led {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .led.green {
+      background: #2ed573;
+      box-shadow: 0 0 10px 2px rgba(46, 213, 115, 0.7), inset 1px 1px 2px rgba(255,255,255,0.8);
+      animation: led-pulse 2s infinite;
+    }
+    .led.orange {
+      background: var(--accent);
+      box-shadow: 0 0 10px 2px rgba(255, 71, 87, 0.7), inset 1px 1px 2px rgba(255,255,255,0.8);
+    }
+    .led.red {
+      background: #ff4757;
+      box-shadow: 0 0 8px 1px rgba(255, 71, 87, 0.5);
+    }
+
+    @keyframes led-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(0.92); }
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1360px;
+      margin: 32px auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Skeuomorphic Bolted Panel / Card */
+    .panel {
+      background: var(--bg-chassis);
+      box-shadow: var(--shadow-card);
+      border-radius: 16px;
+      position: relative;
+      padding: 24px 28px;
+      transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Manufacturing Details: Corner Screws */
+    .panel-bolted {
+      background-image:
+        radial-gradient(circle at 14px 14px, #a3b1c6 1.5px, #ffffff 2.5px, transparent 3.5px),
+        radial-gradient(circle at calc(100% - 14px) 14px, #a3b1c6 1.5px, #ffffff 2.5px, transparent 3.5px),
+        radial-gradient(circle at 14px calc(100% - 14px), #a3b1c6 1.5px, #ffffff 2.5px, transparent 3.5px),
+        radial-gradient(circle at calc(100% - 14px) calc(100% - 14px), #a3b1c6 1.5px, #ffffff 2.5px, transparent 3.5px);
+    }
+
+    /* Vent Slots */
+    .vent-group {
+      display: flex;
+      gap: 4px;
+    }
+    .vent-slot {
+      width: 4px;
+      height: 20px;
+      border-radius: 9999px;
+      background: var(--bg-recessed);
+      box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #ffffff;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(186, 190, 204, 0.3);
+    }
+
+    .panel-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .panel-title span.tag {
+      background: var(--bg-recessed);
+      padding: 2px 7px;
+      border-radius: 4px;
+      box-shadow: var(--shadow-pill-recessed);
+      color: var(--text-main);
+      font-size: 11px;
+    }
+
+    /* Top Summary Tiles */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .metric-card {
+      background: var(--bg-chassis);
+      box-shadow: var(--shadow-card);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card.accent-stripe::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 6px; height: 100%;
+      background: var(--accent);
+      box-shadow: 1px 0 4px rgba(255, 71, 87, 0.4);
+    }
+
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .metric-value-huge {
+      font-family: var(--font-mono);
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      text-shadow: 0 1px 0 #ffffff;
+    }
+    .metric-value-huge span.unit {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-left: 4px;
+    }
+
+    .metric-sub {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* CRT / Recessed Screen Bezel (Oscillograph) */
+    .screen-bezel {
+      background: var(--screen-bezel);
+      box-shadow: inset 4px 4px 10px #0a0d14, 0 1px 0 #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .screen-glass {
+      background-color: var(--screen-bg);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Scanlines effect */
+    .screen-glass::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    #oscillograph {
+      width: 100%;
+      height: 170px;
+      display: block;
+    }
+
+    /* Machines Grid */
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+      gap: 28px;
+    }
+    @media (max-width: 600px) {
+      .nodes-grid { grid-template-columns: 1fr; }
+    }
+
+    .node-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed rgba(186, 190, 204, 0.5);
+    }
+
+    /* 7-Segment / High Visibility Digital Readout */
+    .digital-readout-well {
+      background: var(--bg-recessed);
+      box-shadow: var(--shadow-recessed);
+      padding: 8px 18px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+    .digital-readout-well .num {
+      font-family: var(--font-mono);
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .digital-readout-well .unit {
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    /* Physical Recessed Breakdown Bar */
+    .breakdown-recessed {
+      height: 16px;
+      background: var(--bg-recessed);
+      box-shadow: var(--shadow-recessed);
+      border-radius: 9999px;
+      display: flex;
+      overflow: hidden;
+      padding: 2px;
+      margin: 14px 0 20px 0;
+    }
+    .seg {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .seg-gpu { background: var(--accent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.4); }
+    .seg-cpu { background: #3b82f6; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4); }
+    .seg-base { background: #64748b; }
+    .seg-psu { background: #94a3b8; }
+
+    /* Skeuomorphic Table */
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .specs-table tr {
+      border-bottom: 1px solid rgba(186, 190, 204, 0.3);
+    }
+    .specs-table td {
+      padding: 10px 4px;
+    }
+    .specs-table td.label {
+      color: var(--text-muted);
+    }
+    .specs-table td.val {
+      text-align: right;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* 2-Column Workbench */
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 960px) {
+      .workbench-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Physical Tactile Buttons (Keys) */
+    .btn-key {
+      background: var(--bg-chassis);
+      color: var(--text-main);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-floating);
+      cursor: pointer;
+      transition: all 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-shadow: 0 1px 0 #ffffff;
+    }
+    .btn-key:hover {
+      box-shadow: 14px 14px 28px #babecc, -14px -14px 28px #ffffff;
+      color: var(--accent);
+    }
+    .btn-key:active {
+      transform: translateY(2px);
+      box-shadow: var(--shadow-pressed);
+    }
+
+    /* Accent Safety Button */
+    .btn-accent {
+      background: var(--accent);
+      color: var(--accent-fg);
+      box-shadow: 4px 4px 10px rgba(166, 50, 60, 0.4), -4px -4px 10px rgba(255, 120, 130, 0.5);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    .btn-accent:hover {
+      background: var(--accent-hover);
+      color: #fff;
+      box-shadow: 6px 6px 14px rgba(166, 50, 60, 0.5), -6px -6px 14px rgba(255, 120, 130, 0.6);
+    }
+    .btn-accent:active {
+      transform: translateY(2px);
+      box-shadow: inset 4px 4px 8px rgba(120, 20, 30, 0.6), inset -4px -4px 8px rgba(255, 150, 160, 0.4);
+    }
+
+    /* Presets Pills */
+    .preset-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .pill-key {
+      background: var(--bg-chassis);
+      box-shadow: var(--shadow-pill);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 150ms;
+    }
+    .pill-key:hover {
+      color: var(--accent);
+    }
+    .pill-key:active {
+      transform: translateY(1px);
+      box-shadow: var(--shadow-pill-recessed);
+    }
+
+    /* Recessed Data Slot Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .slot-input {
+      width: 100%;
+      background: var(--bg-chassis);
+      box-shadow: var(--shadow-recessed);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-main);
+      font-weight: 600;
+      outline: none;
+      transition: box-shadow 200ms;
+    }
+    .slot-input:focus {
+      box-shadow: var(--shadow-recessed), 0 0 0 2px var(--accent);
+    }
+
+    /* Output Gauge / Well Box */
+    .calc-well {
+      background: var(--bg-recessed);
+      box-shadow: var(--shadow-recessed);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+    .well-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(186, 190, 204, 0.6);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .well-row:last-child {
+      border-bottom: none;
+      padding-top: 12px;
+    }
+    .well-highlight {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+      text-shadow: 0 1px 0 #ffffff;
+    }
+
+    /* Coope Split Bar (Recessed Housing) */
+    .split-track {
+      height: 26px;
+      background: var(--bg-recessed);
+      box-shadow: var(--shadow-recessed);
+      border-radius: 9999px;
+      display: flex;
+      overflow: hidden;
+      padding: 3px;
+      margin: 16px 0;
+    }
+    .split-seg-lab {
+      background: var(--accent);
+      border-radius: 9999px 0 0 9999px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      transition: width 0.5s;
+    }
+    .split-seg-house {
+      background: #475569;
+      border-radius: 0 9999px 9999px 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      transition: width 0.5s;
+    }
+
+    /* Logs Recessed Table */
+    .recessed-table-wrap {
+      background: var(--bg-chassis);
+      box-shadow: var(--shadow-recessed);
+      border-radius: 8px;
+      max-height: 190px;
+      overflow-y: auto;
+      margin-top: 16px;
+      padding: 8px;
+    }
+    .recessed-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .recessed-table th {
+      text-align: left;
+      padding: 6px 8px;
+      color: var(--text-dim);
+      border-bottom: 1px solid rgba(186, 190, 204, 0.4);
+    }
+    .recessed-table td {
+      padding: 8px;
+      border-bottom: 1px solid rgba(186, 190, 204, 0.2);
+    }
+
+    /* Modal (Physical Overlay) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(45, 52, 54, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-chassis {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-chassis);
+      box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.3), -20px -20px 60px #ffffff;
+      border-radius: 18px;
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP SKEUOMORPHIC CHASSIS BAR -->
+  <header>
+    <div class="brand-group">
+      <div class="brand-plate">GRID-OPS</div>
+      <div class="brand-meta">
+        <h1>POWER TELEMETRY &amp; COST AUDITOR</h1>
+        <p>INDUSTRIAL SKEUOMORPHIC HARDWARE AUDIT // COOPEGUANACASTE T-1</p>
+      </div>
+    </div>
+
+    <div class="header-nodes">
+      <div class="tactile-badge">
+        <span class="led green" id="dot-b650"></span>
+        <span>B650 (WORKSTATION)</span>
+      </div>
+      <div class="tactile-badge">
+        <span class="led green" id="dot-b450"></span>
+        <span>B450 (SERVER)</span>
+      </div>
+      <div class="tactile-badge">
+        <span>TARIFA MARGINAL:</span>
+        <strong style="color: var(--accent);" id="hdr-marginal-rate">₡105.25 / kWh</strong>
+      </div>
+      <button class="btn-key" onclick="openSettingsModal()" style="padding: 8px 16px;">
+        ⚙ CONFIG TARIFA
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- FACILITY SUMMARY METRICS -->
+    <section class="summary-grid">
+      <div class="metric-card accent-stripe">
+        <div class="metric-label">POTENCIA TOTAL EN PARED</div>
+        <div class="metric-value-huge" id="total-watts">-- <span class="unit">W</span></div>
+        <div class="metric-sub">Suma combinada B650 + B450</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">COSTO POR HORA (ACTUAL)</div>
+        <div class="metric-value-huge" style="color: var(--accent);" id="cost-per-hour">₡-- <span class="unit">/ h</span></div>
+        <div class="metric-sub">Tarifa marginal con 13% IVA y Bomberos</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">ENERGÍA ACUMULADA HOY</div>
+        <div class="metric-value-huge" id="today-kwh">-- <span class="unit">kWh</span></div>
+        <div class="metric-sub" id="today-cost-sub">Costo acumulado hoy: ₡--</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">PROYECCIÓN 24 HORAS</div>
+        <div class="metric-value-huge" id="cost-proj-day">₡-- <span class="unit">/ día</span></div>
+        <div class="metric-sub">Manteniendo la carga actual</div>
+      </div>
+    </section>
+
+    <!-- CRT OSCILLOGRAPH SCREEN IN RECESSED BEZEL -->
+    <section class="panel panel-bolted">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="tag">OSC-01</span>
+          <span>OSCILOSCOPIO EN TIEMPO REAL // FLUJO DE POTENCIA (WATTS)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div class="vent-group">
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim);">
+            <span style="color: var(--accent);">● B650</span> &nbsp;|&nbsp;
+            <span style="color: #3b82f6;">● B450</span> &nbsp;|&nbsp;
+            <span style="color: #ffffff;">-- TOTAL</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="screen-bezel">
+        <div class="screen-glass">
+          <canvas id="oscillograph"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- MACHINE TELEMETRY PANELS -->
+    <section class="nodes-grid">
+      
+      <!-- B650 WORKSTATION -->
+      <div class="panel panel-bolted">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="tag">NODE-650</span>
+            <span>B650-AERO-G // AI RIG &amp; WORKSTATION</span>
+          </div>
+          <div class="vent-group">
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+          </div>
+        </div>
+
+        <div class="node-hero">
+          <div>
+            <div class="form-label">POTENCIA TOTAL EN PARED</div>
+            <div class="digital-readout-well">
+              <span class="num" id="b650-wall-watts">--</span>
+              <span class="unit">W</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
+              Fuente 88% Eficiencia Gold
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div class="form-label">ENERGÍA HOY</div>
+            <div style="font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--text-main);" id="b650-kwh-today">-- kWh</div>
+            <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--accent);" id="b650-cost-today">₡--</div>
+          </div>
+        </div>
+
+        <div class="form-label">DESGLOSE DE CARGA INTERNA</div>
+        <div class="breakdown-recessed">
+          <div class="seg seg-gpu" id="bar-b650-gpu" style="width: 40%;" title="GPU AMD RX 7900 XT"></div>
+          <div class="seg seg-cpu" id="bar-b650-cpu" style="width: 30%;" title="CPU Ryzen RAPL"></div>
+          <div class="seg seg-base" id="bar-b650-base" style="width: 20%;" title="Placa/RAM"></div>
+          <div class="seg seg-psu" id="bar-b650-psu" style="width: 10%;" title="Pérdida Fuente"></div>
+        </div>
+
+        <table class="specs-table">
+          <tr>
+            <td class="label">GPU AMD Radeon RX 7900 XT</td>
+            <td class="val" style="color: var(--accent);" id="b650-gpu-watts">-- W</td>
+          </tr>
+          <tr>
+            <td class="label">CPU Ryzen RAPL Package</td>
+            <td class="val" style="color: #3b82f6;" id="b650-cpu-watts">-- W</td>
+          </tr>
+          <tr>
+            <td class="label">Placa Madre, RAM, Discos (Base)</td>
+            <td class="val">25.0 W</td>
+          </tr>
+          <tr>
+            <td class="label">Temperatura CPU / GPU Hotspot</td>
+            <td class="val" id="b650-temps">--°C / --°C</td>
+          </tr>
+          <tr>
+            <td class="label">Uso de CPU</td>
+            <td class="val" id="b650-cpu-pct">-- %</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- B450 HOMELAB SERVER -->
+      <div class="panel panel-bolted">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="tag">NODE-450</span>
+            <span>B450M-DS3H // 24/7 HOMELAB SERVER</span>
+          </div>
+          <div class="vent-group">
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+          </div>
+        </div>
+
+        <div class="node-hero">
+          <div>
+            <div class="form-label">POTENCIA TOTAL EN PARED</div>
+            <div class="digital-readout-well">
+              <span class="num" id="b450-wall-watts">--</span>
+              <span class="unit" style="color: #3b82f6;">W</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
+              Fuente 85% Eficiencia Bronze
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div class="form-label">ENERGÍA HOY</div>
+            <div style="font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--text-main);" id="b450-kwh-today">-- kWh</div>
+            <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: #3b82f6;" id="b450-cost-today">₡--</div>
+          </div>
+        </div>
+
+        <div class="form-label">DESGLOSE DE CARGA INTERNA</div>
+        <div class="breakdown-recessed">
+          <div class="seg seg-cpu" id="bar-b450-cpu" style="width: 50%;" title="CPU Ryzen 2600"></div>
+          <div class="seg seg-base" id="bar-b450-base" style="width: 35%;" title="Placa/Discos"></div>
+          <div class="seg seg-psu" id="bar-b450-psu" style="width: 15%;" title="Pérdida Fuente"></div>
+        </div>
+
+        <table class="specs-table">
+          <tr>
+            <td class="label">CPU Ryzen 5 2600 RAPL</td>
+            <td class="val" style="color: #3b82f6;" id="b450-cpu-watts">-- W</td>
+          </tr>
+          <tr>
+            <td class="label">GPU / Display</td>
+            <td class="val" style="color: var(--text-dim);">0.0 W (Headless)</td>
+          </tr>
+          <tr>
+            <td class="label">Placa Madre, RAM, Discos (Base)</td>
+            <td class="val">18.0 W</td>
+          </tr>
+          <tr>
+            <td class="label">Temperatura CPU</td>
+            <td class="val" id="b450-temps">--°C</td>
+          </tr>
+          <tr>
+            <td class="label">Uso de CPU</td>
+            <td class="val" id="b450-cpu-pct">-- %</td>
+          </tr>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- TWO-COLUMN WORKBENCH: CALCULATOR & COOPEGUANACASTE -->
+    <section class="workbench-grid">
+
+      <!-- INFERENCE & COMPUTING COST CALCULATOR -->
+      <div class="panel panel-bolted">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="tag">CALC-01</span>
+            <span>CALCULADORA DE COSTOS DE INFERENCIA Y CÓMPUTO</span>
+          </div>
+          <div class="vent-group">
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+          </div>
+        </div>
+
+        <div class="preset-pills">
+          <button class="pill-key" onclick="setPreset('Qwen 3.8-27B Inferencia', 'b650', 320, 60, 50)">Qwen 27B (320W, 1h)</button>
+          <button class="pill-key" onclick="setPreset('Fine-tuning / Batch', 'b650', 350, 180, 50)">Fine-tune (350W, 3h)</button>
+          <button class="pill-key" onclick="setPreset('B650 Reposo Diario', 'b650', 95, 1440, 0)">B650 24h Reposo</button>
+          <button class="pill-key" onclick="setPreset('B450 Servidor Mes', 'b450', 47, 43200, 0)">B450 1 Mes</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nombre de la Tarea / Cliente</label>
+          <input type="text" class="slot-input" id="job-name" value="Inferencia Qwen 3.8-27B (Cliente A)">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Máquina</label>
+            <select class="slot-input" id="job-node">
+              <option value="b650">B650-AERO-G (Workstation)</option>
+              <option value="b450">B450M-DS3H (Server)</option>
+              <option value="both">Ambas máquinas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Potencia Promedio (Watts)</label>
+            <input type="number" class="slot-input" id="job-watts" value="320" oninput="calculateJob()">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Duración (Minutos)</label>
+            <input type="number" class="slot-input" id="job-minutes" value="60" oninput="calculateJob()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Margen Comercial (%)</label>
+            <input type="number" class="slot-input" id="job-margin" value="50" oninput="calculateJob()">
+          </div>
+        </div>
+
+        <!-- Output Well -->
+        <div class="calc-well">
+          <div class="well-row">
+            <span class="form-label" style="margin:0;">ENERGÍA CONSUMIDA:</span>
+            <strong id="res-kwh">0.320 kWh</strong>
+          </div>
+          <div class="well-row">
+            <span class="form-label" style="margin:0;">COSTO ELÉCTRICO MARGINAL:</span>
+            <strong id="res-electric-cost" style="color: var(--text-main);">₡33.68</strong>
+          </div>
+          <div class="well-row">
+            <span class="form-label" style="margin:0; font-weight:800; color: var(--accent);">PRECIO SUGERIDO DE COBRO (+50%):</span>
+            <strong class="well-highlight" id="res-suggested-price">₡50.52</strong>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+          <button class="btn-key btn-accent" onclick="saveJob()">
+            💾 GUARDAR EN HISTORIAL
+          </button>
+        </div>
+      </div>
+
+      <!-- COOPEGUANACASTE AUDITOR & ISOLATION -->
+      <div class="panel panel-bolted">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="tag">COOP-01</span>
+            <span>AISLAMIENTO DE FACTURA // COOPEGUANACASTE</span>
+          </div>
+          <div class="vent-group">
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+          </div>
+        </div>
+
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          Ingresa el consumo diario reportado en la aplicación de <strong>Coopeguanacaste</strong> para aislar el consumo neto de la casa restando los servidores.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Fecha del Registro</label>
+            <input type="date" class="slot-input" id="coope-date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Coopeguanacaste (kWh)</label>
+            <input type="number" step="0.1" class="slot-input" id="coope-total-kwh" placeholder="ej. 21.5">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Notas / Detalle</label>
+          <input type="text" class="slot-input" id="coope-notes" placeholder="ej. Inferencia nocturna o uso de A/C">
+        </div>
+
+        <button class="btn-key btn-accent" onclick="submitCoopeLog()" style="width: 100%;">
+          CALCULAR Y REGISTRAR AISLAMIENTO
+        </button>
+
+        <!-- Physical Recessed Split Track -->
+        <div style="margin-top: 18px;">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; margin-bottom: 6px;">
+            <span>HOMELAB (B650+B450): <strong id="split-lab-text" style="color: var(--accent);">--%</strong></span>
+            <span>RESTO DE LA CASA: <strong id="split-house-text">--%</strong></span>
+          </div>
+          <div class="split-track">
+            <div class="split-seg-lab" id="split-lab-bar" style="width: 50%;">LAB</div>
+            <div class="split-seg-house" id="split-house-bar" style="width: 50%;">CASA</div>
+          </div>
+        </div>
+
+        <!-- Logs Table -->
+        <div class="recessed-table-wrap">
+          <table class="recessed-table">
+            <thead>
+              <tr>
+                <th>FECHA</th>
+                <th>TOTAL COOPE</th>
+                <th>LAB (kWh / ₡)</th>
+                <th>CASA NETA</th>
+                <th>% LAB</th>
+              </tr>
+            </thead>
+            <tbody id="coope-table-body">
+              <tr><td colspan="5" style="text-align: center; color: var(--text-dim);">Sin registros guardados</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- SKEUOMORPHIC SETTINGS MODAL -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-chassis">
+      <div class="panel-header">
+        <div class="panel-title">CONFIGURACIÓN DE TARIFAS ELECTRICAS (CR)</div>
+        <button onclick="closeSettingsModal()" class="btn-key" style="padding: 4px 10px; font-size: 11px;">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tarifa Marginal por kWh (₡)</label>
+        <input type="number" step="0.01" class="slot-input" id="cfg-marginal-rate" value="105.25">
+        <small style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">
+          Incluye Bloque 2 (₡89.07) + 13% IVA (₡11.58) + 1.75% Bomberos + Alumbrado (₡3.04)
+        </small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tarifa Bloque 1 Base (≤ 200 kWh) (₡)</label>
+        <input type="number" step="0.01" class="slot-input" id="cfg-base1" value="63.18">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tarifa Bloque 2 Base (> 200 kWh) (₡)</label>
+        <input type="number" step="0.01" class="slot-input" id="cfg-base2" value="89.07">
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+        <button class="btn-key" onclick="closeSettingsModal()">CANCELAR</button>
+        <button class="btn-key btn-accent" onclick="saveSettings()">GUARDAR TARIFA</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentMarginalRate = 105.25;
+    let chartHistory = [];
+
+    document.getElementById('coope-date').valueAsDate = new Date();
+
+    async function updateTelemetry() {
+      try {
+        const res = await fetch('/api/status');
+        if (!res.ok) return;
+        const data = await res.json();
+
+        currentMarginalRate = data.marginal_rate || 105.25;
+        document.getElementById('hdr-marginal-rate').innerText = `₡${currentMarginalRate.toFixed(2)} / kWh`;
+
+        // Facility Totals
+        document.getElementById('total-watts').innerHTML = `${data.total_wall_watts.toFixed(1)} <span class="unit">W</span>`;
+        document.getElementById('cost-per-hour').innerHTML = `₡${data.cost_per_hour_colones.toFixed(2)} <span class="unit">/ h</span>`;
+        document.getElementById('today-kwh').innerHTML = `${data.today_kwh.total.toFixed(3)} <span class="unit">kWh</span>`;
+        document.getElementById('today-cost-sub').innerText = `Costo acumulado hoy: ₡${data.today_cost_colones.toFixed(2)}`;
+        document.getElementById('cost-proj-day').innerHTML = `₡${data.cost_per_day_proj_colones.toFixed(2)} <span class="unit">/ día</span>`;
+
+        // Node B650
+        const b650 = data.nodes.b650;
+        const dot650 = document.getElementById('dot-b650');
+        if (b650.online) {
+          dot650.className = 'led green';
+          document.getElementById('b650-wall-watts').innerText = b650.wall_watts.toFixed(1);
+          document.getElementById('b650-gpu-watts').innerText = `${b650.gpu_watts.toFixed(1)} W`;
+          document.getElementById('b650-cpu-watts').innerText = `${b650.cpu_watts.toFixed(1)} W`;
+          document.getElementById('b650-temps').innerText = `${b650.cpu_temp}°C / ${b650.gpu_temp}°C`;
+          document.getElementById('b650-cpu-pct').innerText = `${b650.cpu_usage_pct}%`;
+          document.getElementById('b650-kwh-today').innerText = `${data.today_kwh.b650.toFixed(3)} kWh`;
+          document.getElementById('b650-cost-today').innerText = `₡${(data.today_kwh.b650 * currentMarginalRate).toFixed(2)}`;
+
+          const tot = Math.max(b650.wall_watts, 1.0);
+          document.getElementById('bar-b650-gpu').style.width = `${(b650.gpu_watts / tot) * 100}%`;
+          document.getElementById('bar-b650-cpu').style.width = `${(b650.cpu_watts / tot) * 100}%`;
+          document.getElementById('bar-b650-base').style.width = `${(25.0 / tot) * 100}%`;
+          document.getElementById('bar-b650-psu').style.width = `${((tot - (b650.gpu_watts + b650.cpu_watts + 25)) / tot) * 100}%`;
+        } else {
+          dot650.className = 'led red';
+        }
+
+        // Node B450
+        const b450 = data.nodes.b450;
+        const dot450 = document.getElementById('dot-b450');
+        if (b450.online) {
+          dot450.className = 'led green';
+          document.getElementById('b450-wall-watts').innerText = b450.wall_watts.toFixed(1);
+          document.getElementById('b450-cpu-watts').innerText = `${b450.cpu_watts.toFixed(1)} W`;
+          document.getElementById('b450-temps').innerText = `${b450.cpu_temp}°C`;
+          document.getElementById('b450-cpu-pct').innerText = `${b450.cpu_usage_pct}%`;
+          document.getElementById('b450-kwh-today').innerText = `${data.today_kwh.b450.toFixed(3)} kWh`;
+          document.getElementById('b450-cost-today').innerText = `₡${(data.today_kwh.b450 * currentMarginalRate).toFixed(2)}`;
+
+          const tot450 = Math.max(b450.wall_watts, 1.0);
+          document.getElementById('bar-b450-cpu').style.width = `${(b450.cpu_watts / tot450) * 100}%`;
+          document.getElementById('bar-b450-base').style.width = `${(18.0 / tot450) * 100}%`;
+          document.getElementById('bar-b450-psu').style.width = `${((tot450 - (b450.cpu_watts + 18)) / tot450) * 100}%`;
+        } else {
+          dot450.className = 'led red';
+        }
+
+        // Oscillograph Update
+        if (data.recent_chart && data.recent_chart.length > 0) {
+          chartHistory = data.recent_chart;
+          drawOscillograph();
+        }
+      } catch (err) {
+        console.error('Telemetry fetch error', err);
+      }
+    }
+
+    function drawOscillograph() {
+      const canvas = document.getElementById('oscillograph');
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.fillStyle = '#0d1117';
+      ctx.fillRect(0, 0, w, h);
+
+      // CRT Phosphor Grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+      ctx.lineWidth = 1;
+      for (let y = 0; y < h; y += 28) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+      for (let x = 0; x < w; x += 36) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+
+      if (chartHistory.length < 2) return;
+
+      let maxW = 200.0;
+      chartHistory.forEach(pt => {
+        if (pt.total_w > maxW) maxW = pt.total_w;
+      });
+      maxW = Math.ceil(maxW / 50) * 50;
+
+      // Draw Total (White glow)
+      drawLine(chartHistory.map(p => p.total_w), '#ffffff', 1.5, [3, 3]);
+      // Draw B650 (Braun Red / Safety Orange)
+      drawLine(chartHistory.map(p => p.b650_w), '#ff4757', 2.0);
+      // Draw B450 (Tech Blue)
+      drawLine(chartHistory.map(p => p.b450_w), '#3b82f6', 2.0);
+
+      function drawLine(points, color, width, dash = []) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.setLineDash(dash);
+        ctx.beginPath();
+        points.forEach((val, i) => {
+          const x = (i / (chartHistory.length - 1)) * (w - 24) + 12;
+          const y = h - (val / maxW) * (h - 24) - 12;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Scale mark
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.font = '10px JetBrains Mono';
+      ctx.fillText(`MAX: ${maxW} W`, w - 90, 16);
+    }
+
+    function setPreset(name, node, watts, minutes, margin) {
+      document.getElementById('job-name').value = name;
+      document.getElementById('job-node').value = node;
+      document.getElementById('job-watts').value = watts;
+      document.getElementById('job-minutes').value = minutes;
+      document.getElementById('job-margin').value = margin;
+      calculateJob();
+    }
+
+    function calculateJob() {
+      const watts = parseFloat(document.getElementById('job-watts').value) || 0;
+      const minutes = parseFloat(document.getElementById('job-minutes').value) || 0;
+      const margin = parseFloat(document.getElementById('job-margin').value) || 0;
+
+      const kwh = (watts * (minutes / 60.0)) / 1000.0;
+      const electricCost = kwh * currentMarginalRate;
+      const suggestedPrice = electricCost * (1.0 + margin / 100.0);
+
+      document.getElementById('res-kwh').innerText = `${kwh.toFixed(4)} kWh`;
+      document.getElementById('res-electric-cost').innerText = `₡${electricCost.toFixed(2)}`;
+      document.getElementById('res-suggested-price').innerText = `₡${suggestedPrice.toFixed(2)}`;
+    }
+
+    async function saveJob() {
+      const name = document.getElementById('job-name').value;
+      const node = document.getElementById('job-node').value;
+      const watts = parseFloat(document.getElementById('job-watts').value) || 0;
+      const minutes = parseFloat(document.getElementById('job-minutes').value) || 0;
+      const margin = parseFloat(document.getElementById('job-margin').value) || 0;
+
+      const res = await fetch('/api/jobs', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          name: name,
+          node_id: node,
+          watts: watts,
+          duration_minutes: minutes,
+          margin_pct: margin,
+          save: true
+        })
+      });
+      if (res.ok) {
+        alert('Trabajo guardado exitosamente en el historial.');
+      }
+    }
+
+    async function submitCoopeLog() {
+      const date = document.getElementById('coope-date').value;
+      const totalKwh = parseFloat(document.getElementById('coope-total-kwh').value);
+      const notes = document.getElementById('coope-notes').value;
+
+      if (!date || isNaN(totalKwh) || totalKwh <= 0) {
+        alert('Por favor ingresa la fecha y el total de kWh de la app de Coopeguanacaste.');
+        return;
+      }
+
+      const res = await fetch('/api/coope', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          date: date,
+          total_kwh: totalKwh,
+          notes: notes
+        })
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        document.getElementById('split-lab-text').innerText = `${result.homelab_pct}% (${result.homelab_kwh} kWh)`;
+        document.getElementById('split-house-text').innerText = `${(100 - result.homelab_pct).toFixed(1)}% (${result.household_kwh} kWh)`;
+        document.getElementById('split-lab-bar').style.width = `${result.homelab_pct}%`;
+        document.getElementById('split-house-bar').style.width = `${100 - result.homelab_pct}%`;
+        document.getElementById('split-lab-bar').innerText = `LAB ${result.homelab_pct}%`;
+        document.getElementById('split-house-bar').innerText = `CASA ${(100 - result.homelab_pct).toFixed(1)}%`;
+        loadCoopeLogs();
+      }
+    }
+
+    async function loadCoopeLogs() {
+      try {
+        const res = await fetch('/api/coope');
+        if (!res.ok) return;
+        const data = await res.json();
+        const tbody = document.getElementById('coope-table-body');
+        if (data.logs.length === 0) return;
+
+        tbody.innerHTML = '';
+        data.logs.forEach(l => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${l.date}</strong></td>
+            <td>${l.total_coope_kwh} kWh</td>
+            <td style="color: var(--accent); font-weight:700;">${l.homelab_kwh} kWh (₡${l.homelab_cost_colones.toFixed(0)})</td>
+            <td>${l.household_kwh} kWh</td>
+            <td><span style="background: var(--bg-recessed); box-shadow: var(--shadow-pill-recessed); padding: 2px 8px; border-radius: 9999px; font-weight: 700;">${l.homelab_pct}%</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {}
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settings-modal').classList.add('active');
+    }
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.remove('active');
+    }
+
+    async function saveSettings() {
+      const mRate = document.getElementById('cfg-marginal-rate').value;
+      const b1 = document.getElementById('cfg-base1').value;
+      const b2 = document.getElementById('cfg-base2').value;
+
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          marginal_rate: mRate,
+          tier1_base_rate: b1,
+          tier2_base_rate: b2
+        })
+      });
+      closeSettingsModal();
+      updateTelemetry();
+      calculateJob();
+    }
+
+    calculateJob();
+    updateTelemetry();
+    loadCoopeLogs();
+    setInterval(updateTelemetry, 3000);
+    window.addEventListener('resize', drawOscillograph);
+  </script>
+</body>
+</html>

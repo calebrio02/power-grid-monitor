@@ -1,0 +1,21 @@
+# Persistent Database
+data/
+*.db
+*.sqlite3
+
+# Environment files
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+env/
+venv/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

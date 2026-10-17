@@ -1,0 +1,37 @@
+services:
+  # Hardware Sensor Agent for B650
+  agent-b650:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    container_name: power-agent-b650
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /sys:/sys:ro
+    network_mode: host
+    environment:
+      - NODE_ID=b650
+      - NODE_NAME=B650-AERO-G (Workstation)
+      - BASE_WATTS=25.0
+      - PSU_EFFICIENCY=0.88
+      - PORT=9120
+
+  # Central Industrial Power Dashboard & Accounting Server
+  dashboard:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: power-dashboard
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PORT=8055
+      - DATA_DIR=/app/data
+      - STATIC_DIR=/app/static
+      - B650_URL=${B650_URL:-http://127.0.0.1:9120}
+      - B450_URL=${B450_URL:-http://192.168.1.100:9120}
+    depends_on:
+      - agent-b650
