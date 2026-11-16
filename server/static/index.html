@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POWER-GRID // INDUSTRIAL SKEUOMORPHIC TELEMETRY</title>
+  <title>Monitor eléctrico | Grid Ops</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -639,6 +639,45 @@
       border-radius: 18px;
       padding: 30px;
     }
+    :focus-visible { outline: 3px solid #a72132; outline-offset: 3px; }
+    .telemetry-status { padding: 12px 16px; border-left: 4px solid #a72132; background: #f4e7e8; color: #68202a; border-radius: 8px; font-weight: 700; }
+    .metric-label, .recessed-table th { color: #4a5568; }
+    .panel-header { gap: 12px; flex-wrap: wrap; }
+    .panel, .metric-card, .workbench-grid > *, .nodes-grid > * { min-width: 0; }
+    .recessed-table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { header { position: static; padding: 16px; } .container { padding: 0 16px; margin: 24px auto; } .panel { padding: 20px; } .node-hero { gap: 12px; flex-wrap: wrap; } .summary-grid { grid-template-columns: minmax(0, 1fr); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* Monitoring layout: quiet surfaces, with industrial tags retained. */
+    :root { --bg-chassis:#f3f5f7; --bg-panel:#fff; --bg-recessed:#edf1f4; --text-main:#18242d; --text-muted:#4e606e; --text-dim:#566977; --accent:#b84738; --accent-hover:#96382d; }
+    body { background:#f3f5f7; background-image:none; line-height:1.45; }
+    header { position:static; background:#fff; border-bottom:1px solid #dce3e8; box-shadow:none; padding:18px 32px; }
+    .brand-plate { background:#263b47; box-shadow:none; text-shadow:none; font-size:11px; letter-spacing:.08em; }
+    .brand-meta h1 { font-size:21px; text-shadow:none; } .brand-meta p { font:500 12px var(--font-sans); letter-spacing:0; text-transform:none; }
+    .header-nodes { gap:8px; } .tactile-badge { box-shadow:none; border:1px solid #dce3e8; background:#f8fafb; font:600 11px var(--font-sans); letter-spacing:0; padding:8px 10px; }
+    .led, .led.green, .led.red { box-shadow:none; animation:none; flex:none; } .led.green { background:#31846a; } .led.red { background:#b84738; }
+    .container { max-width:1640px; margin:24px auto; padding:0 32px; gap:16px; }
+    .telemetry-status { border:1px solid #dce3e8; background:#fff; color:#4e606e; padding:9px 14px; font-size:12px; font-weight:600; }
+    .summary-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .panel, .metric-card { background:#fff; background-image:none; border:1px solid #dce3e8; border-radius:10px; box-shadow:0 1px 2px #142b380a; padding:20px; }
+    .metric-card.accent-stripe::before, .screen-glass::after { display:none; }
+    .metric-label, .form-label { font:600 11px var(--font-sans); letter-spacing:.04em; color:#536673; }
+    .metric-value-huge { font:600 30px/1.2 var(--font-sans); letter-spacing:-.03em; text-shadow:none; font-variant-numeric:tabular-nums; }
+    .metric-value-huge span.unit { font-size:14px; color:#536673; } .metric-sub { font-size:12px; color:#536673; }
+    .nodes-grid, .workbench-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .panel-header { margin-bottom:14px; padding-bottom:12px; border-color:#e7ecef; } .panel-title { font:600 15px var(--font-sans); letter-spacing:0; }
+    .tag { background:#eaf0f2; color:#3c5663; box-shadow:none; border-radius:4px; font:700 10px var(--font-mono); padding:4px 7px; } .vent-group { display:none; }
+    .node-hero { margin-bottom:14px; padding-bottom:12px; border-color:#e7ecef; }
+    .digital-readout-well { background:none; box-shadow:none; padding:0; } .digital-readout-well .num { font:600 32px/1.2 var(--font-sans); font-variant-numeric:tabular-nums; } .digital-readout-well .unit { color:#536673; }
+    .breakdown-recessed { box-shadow:none; padding:0; height:7px; margin:9px 0 12px; } .seg { box-shadow:none; border-radius:0; }
+    .specs-table td { padding:5px 0; } .specs-table { font-size:12px; }
+    .screen-bezel, .screen-glass { background:#f8fafb; box-shadow:none; border-radius:6px; padding:0; } #oscillograph { height:190px; } .chart-note { font-size:11px; color:#536673; padding:0 12px 10px; }
+    .btn-key, .pill-key, .slot-input, .calc-well, .recessed-table-wrap, .split-track, .modal-chassis { box-shadow:none; text-shadow:none; }
+    .btn-key, .pill-key { border:1px solid #ccd6dc; background:#fff; color:#263b47; } .btn-key:hover, .pill-key:hover { box-shadow:none; background:#f2f6f7; } .btn-accent { background:#263b47; color:#fff; border-color:#263b47; } .btn-accent:hover { background:#344e5c; color:#fff; }
+    .slot-input { background:#fff; border:1px solid #cbd6dd; } .calc-well, .recessed-table-wrap { background:#f6f8f9; border:1px solid #e0e7eb; } .modal-chassis { background:#fff; margin:16px; max-height:90vh; overflow:auto; }
+    @media(max-width:960px) { .summary-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:600px) { header { padding:16px; } .container { padding:0 16px; margin:16px auto; gap:12px; } .header-nodes { gap:6px; } .tactile-badge { padding:6px 8px; } .summary-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; } .metric-card { padding:14px; } .metric-value-huge { font-size:23px; overflow-wrap:anywhere; } .metric-value-huge span.unit { font-size:12px; } .nodes-grid,.workbench-grid { grid-template-columns:minmax(0,1fr); } .panel { padding:16px; } .node-hero { flex-wrap:wrap; } }
+
   </style>
 </head>
 <body>
@@ -648,36 +687,37 @@
     <div class="brand-group">
       <div class="brand-plate">GRID-OPS</div>
       <div class="brand-meta">
-        <h1>POWER TELEMETRY &amp; COST AUDITOR</h1>
-        <p>INDUSTRIAL SKEUOMORPHIC HARDWARE AUDIT // COOPEGUANACASTE T-1</p>
+        <h1>Monitor eléctrico</h1>
+        <p>Telemetría y costos · Coopeguanacaste</p>
       </div>
     </div>
 
     <div class="header-nodes">
       <div class="tactile-badge">
-        <span class="led green" id="dot-b650"></span>
-        <span>B650 (WORKSTATION)</span>
+        <span class="led red" id="dot-b650" aria-hidden="true"></span>
+        <span id="status-b650">B650: Sin datos</span>
       </div>
       <div class="tactile-badge">
-        <span class="led green" id="dot-b450"></span>
-        <span>B450 (SERVER)</span>
+        <span class="led red" id="dot-b450" aria-hidden="true"></span>
+        <span id="status-b450">B450: Sin datos</span>
       </div>
       <div class="tactile-badge">
         <span>TARIFA MARGINAL:</span>
-        <strong style="color: var(--accent);" id="hdr-marginal-rate">₡105.25 / kWh</strong>
+        <strong style="color: var(--accent);" id="hdr-marginal-rate">--</strong>
       </div>
       <button class="btn-key" onclick="openSettingsModal()" style="padding: 8px 16px;">
-        ⚙ CONFIG TARIFA
+        ⚙ Tarifa
       </button>
     </div>
   </header>
 
   <main class="container">
+    <div class="telemetry-status" id="telemetry-status" role="status" aria-live="polite">Esperando telemetría…</div>
 
     <!-- FACILITY SUMMARY METRICS -->
-    <section class="summary-grid">
+    <section class="summary-grid" aria-label="Resumen">
       <div class="metric-card accent-stripe">
-        <div class="metric-label">POTENCIA TOTAL EN PARED</div>
+        <div class="metric-label">POTENCIA TOTAL ESTIMADA EN PARED</div>
         <div class="metric-value-huge" id="total-watts">-- <span class="unit">W</span></div>
         <div class="metric-sub">Suma combinada B650 + B450</div>
       </div>
@@ -685,13 +725,13 @@
       <div class="metric-card">
         <div class="metric-label">COSTO POR HORA (ACTUAL)</div>
         <div class="metric-value-huge" style="color: var(--accent);" id="cost-per-hour">₡-- <span class="unit">/ h</span></div>
-        <div class="metric-sub">Tarifa marginal con 13% IVA y Bomberos</div>
+        <div class="metric-sub">Estimación con tarifa marginal configurada</div>
       </div>
 
       <div class="metric-card">
         <div class="metric-label">ENERGÍA ACUMULADA HOY</div>
         <div class="metric-value-huge" id="today-kwh">-- <span class="unit">kWh</span></div>
-        <div class="metric-sub" id="today-cost-sub">Costo acumulado hoy: ₡--</div>
+        <div class="metric-sub" id="today-cost-sub">Estimación registrada; puede tener períodos sin datos.</div>
       </div>
 
       <div class="metric-card">
@@ -701,43 +741,15 @@
       </div>
     </section>
 
-    <!-- CRT OSCILLOGRAPH SCREEN IN RECESSED BEZEL -->
-    <section class="panel panel-bolted">
-      <div class="panel-header">
-        <div class="panel-title">
-          <span class="tag">OSC-01</span>
-          <span>OSCILOSCOPIO EN TIEMPO REAL // FLUJO DE POTENCIA (WATTS)</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 16px;">
-          <div class="vent-group">
-            <div class="vent-slot"></div>
-            <div class="vent-slot"></div>
-            <div class="vent-slot"></div>
-          </div>
-          <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim);">
-            <span style="color: var(--accent);">● B650</span> &nbsp;|&nbsp;
-            <span style="color: #3b82f6;">● B450</span> &nbsp;|&nbsp;
-            <span style="color: #ffffff;">-- TOTAL</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="screen-bezel">
-        <div class="screen-glass">
-          <canvas id="oscillograph"></canvas>
-        </div>
-      </div>
-    </section>
-
     <!-- MACHINE TELEMETRY PANELS -->
-    <section class="nodes-grid">
+    <section class="nodes-grid" aria-label="Nodos">
       
       <!-- B650 WORKSTATION -->
       <div class="panel panel-bolted">
         <div class="panel-header">
           <div class="panel-title">
             <span class="tag">NODE-650</span>
-            <span>B650-AERO-G // AI RIG &amp; WORKSTATION</span>
+            <span>B650 · Estación de trabajo</span>
           </div>
           <div class="vent-group">
             <div class="vent-slot"></div>
@@ -754,7 +766,7 @@
               <span class="unit">W</span>
             </div>
             <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
-              Fuente 88% Eficiencia Gold
+              Estimación: modelo de fuente y carga base
             </div>
           </div>
           <div style="text-align: right;">
@@ -766,10 +778,10 @@
 
         <div class="form-label">DESGLOSE DE CARGA INTERNA</div>
         <div class="breakdown-recessed">
-          <div class="seg seg-gpu" id="bar-b650-gpu" style="width: 40%;" title="GPU AMD RX 7900 XT"></div>
-          <div class="seg seg-cpu" id="bar-b650-cpu" style="width: 30%;" title="CPU Ryzen RAPL"></div>
-          <div class="seg seg-base" id="bar-b650-base" style="width: 20%;" title="Placa/RAM"></div>
-          <div class="seg seg-psu" id="bar-b650-psu" style="width: 10%;" title="Pérdida Fuente"></div>
+          <div class="seg seg-gpu" id="bar-b650-gpu" style="width: 0%;" title="GPU AMD RX 7900 XT"></div>
+          <div class="seg seg-cpu" id="bar-b650-cpu" style="width: 0%;" title="CPU Ryzen RAPL"></div>
+          <div class="seg seg-base" id="bar-b650-base" style="width: 0%;" title="Placa/RAM"></div>
+          <div class="seg seg-psu" id="bar-b650-psu" style="width: 0%;" title="Pérdida Fuente"></div>
         </div>
 
         <table class="specs-table">
@@ -801,7 +813,7 @@
         <div class="panel-header">
           <div class="panel-title">
             <span class="tag">NODE-450</span>
-            <span>B450M-DS3H // 24/7 HOMELAB SERVER</span>
+            <span>B450 · Servidor</span>
           </div>
           <div class="vent-group">
             <div class="vent-slot"></div>
@@ -818,7 +830,7 @@
               <span class="unit" style="color: #3b82f6;">W</span>
             </div>
             <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
-              Fuente 85% Eficiencia Bronze
+              Estimación: modelo de fuente y carga base
             </div>
           </div>
           <div style="text-align: right;">
@@ -830,9 +842,9 @@
 
         <div class="form-label">DESGLOSE DE CARGA INTERNA</div>
         <div class="breakdown-recessed">
-          <div class="seg seg-cpu" id="bar-b450-cpu" style="width: 50%;" title="CPU Ryzen 2600"></div>
-          <div class="seg seg-base" id="bar-b450-base" style="width: 35%;" title="Placa/Discos"></div>
-          <div class="seg seg-psu" id="bar-b450-psu" style="width: 15%;" title="Pérdida Fuente"></div>
+          <div class="seg seg-cpu" id="bar-b450-cpu" style="width: 0%;" title="CPU Ryzen 2600"></div>
+          <div class="seg seg-base" id="bar-b450-base" style="width: 0%;" title="Placa/Discos"></div>
+          <div class="seg seg-psu" id="bar-b450-psu" style="width: 0%;" title="Pérdida Fuente"></div>
         </div>
 
         <table class="specs-table">
@@ -859,6 +871,35 @@
         </table>
       </div>
 
+    </section>
+
+    <!-- CRT OSCILLOGRAPH SCREEN IN RECESSED BEZEL -->
+    <section class="panel panel-bolted" aria-label="Historial de potencia">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="tag">HISTORIAL</span>
+          <span>Potencia estimada · últimos 5 minutos</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div class="vent-group">
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+            <div class="vent-slot"></div>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim);">
+            <span style="color: var(--accent);">● B650</span> &nbsp;|&nbsp;
+            <span style="color: #3b82f6;">● B450</span> &nbsp;|&nbsp;
+            <span style="color: #4a5568;">-- TOTAL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-bezel">
+        <div class="screen-glass">
+          <canvas id="oscillograph" aria-label="Potencia estimada en vatios; huecos indican datos ausentes"></canvas>
+          <div class="chart-note">Huecos = sin datos · historial de la sesión</div>
+        </div>
+      </div>
     </section>
 
     <!-- TWO-COLUMN WORKBENCH: CALCULATOR & COOPEGUANACASTE -->
@@ -982,8 +1023,8 @@
             <span>RESTO DE LA CASA: <strong id="split-house-text">--%</strong></span>
           </div>
           <div class="split-track">
-            <div class="split-seg-lab" id="split-lab-bar" style="width: 50%;">LAB</div>
-            <div class="split-seg-house" id="split-house-bar" style="width: 50%;">CASA</div>
+            <div class="split-seg-lab" id="split-lab-bar" style="width: 0%;">LAB</div>
+            <div class="split-seg-house" id="split-house-bar" style="width: 0%;">CASA</div>
           </div>
         </div>
 
@@ -1021,7 +1062,7 @@
         <label class="form-label">Tarifa Marginal por kWh (₡)</label>
         <input type="number" step="0.01" class="slot-input" id="cfg-marginal-rate" value="105.25">
         <small style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">
-          Incluye Bloque 2 (₡89.07) + 13% IVA (₡11.58) + 1.75% Bomberos + Alumbrado (₡3.04)
+          Valor configurable; verifica su vigencia y composición con tu factura.
         </small>
       </div>
       <div class="form-group">
@@ -1045,21 +1086,46 @@
 
     document.getElementById('coope-date').valueAsDate = new Date();
 
+    function clearLiveReadings(message) {
+      document.getElementById('telemetry-status').innerText = message;
+      for (const id of ['total-watts', 'cost-per-hour', 'cost-proj-day']) document.getElementById(id).innerText = '--';
+      for (const node of ['b650', 'b450']) {
+        document.getElementById(`dot-${node}`).className = 'led red';
+        document.getElementById(`status-${node}`).innerText = `${node.toUpperCase()}: Sin datos actuales`;
+        for (const field of ['wall-watts', 'cpu-watts', 'temps', 'cpu-pct']) document.getElementById(`${node}-${field}`).innerText = '--';
+        document.querySelectorAll(`[id^="bar-${node}-"]`).forEach(el => el.style.width = '0%');
+      }
+      document.getElementById('b650-gpu-watts').innerText = '--';
+      chartHistory = [];
+      drawOscillograph();
+    }
+
     async function updateTelemetry() {
       try {
         const res = await fetch('/api/status');
-        if (!res.ok) return;
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
-        currentMarginalRate = data.marginal_rate || 105.25;
+        if (!data.last_poll || Date.now() / 1000 - data.last_poll > 15) {
+          clearLiveReadings('Telemetría desactualizada o aún no disponible.');
+          return;
+        }
+        const complete = data.nodes.b650.online && data.nodes.b450.online;
+        document.getElementById('telemetry-status').innerText = `${complete ? 'Telemetría actualizada' : 'Datos incompletos: uno o más nodos desconectados'} · Última consulta: ${new Date(data.last_poll * 1000).toLocaleTimeString()}`;
+        for (const node of ['b650', 'b450']) {
+          const n = data.nodes[node];
+          document.getElementById(`status-${node}`).innerText = `${node.toUpperCase()}: ${n.online ? 'Conectado' : 'Desconectado'}`;
+        }
+
+        currentMarginalRate = data.marginal_rate;
         document.getElementById('hdr-marginal-rate').innerText = `₡${currentMarginalRate.toFixed(2)} / kWh`;
 
         // Facility Totals
-        document.getElementById('total-watts').innerHTML = `${data.total_wall_watts.toFixed(1)} <span class="unit">W</span>`;
-        document.getElementById('cost-per-hour').innerHTML = `₡${data.cost_per_hour_colones.toFixed(2)} <span class="unit">/ h</span>`;
+        document.getElementById('total-watts').innerHTML = complete && data.total_wall_watts != null ? `${data.total_wall_watts.toFixed(1)} <span class="unit">W</span>` : '--';
+        document.getElementById('cost-per-hour').innerHTML = complete && data.cost_per_hour_colones != null ? `₡${data.cost_per_hour_colones.toFixed(2)} <span class="unit">/ h</span>` : '--';
         document.getElementById('today-kwh').innerHTML = `${data.today_kwh.total.toFixed(3)} <span class="unit">kWh</span>`;
-        document.getElementById('today-cost-sub').innerText = `Costo acumulado hoy: ₡${data.today_cost_colones.toFixed(2)}`;
-        document.getElementById('cost-proj-day').innerHTML = `₡${data.cost_per_day_proj_colones.toFixed(2)} <span class="unit">/ día</span>`;
+        document.getElementById('today-cost-sub').innerText = `Costo estimado registrado: ₡${data.today_cost_colones.toFixed(2)}; puede haber períodos sin datos.`;
+        document.getElementById('cost-proj-day').innerHTML = complete && data.cost_per_day_proj_colones != null ? `₡${data.cost_per_day_proj_colones.toFixed(2)} <span class="unit">/ día</span>` : '--';
 
         // Node B650
         const b650 = data.nodes.b650;
@@ -1081,6 +1147,8 @@
           document.getElementById('bar-b650-psu').style.width = `${((tot - (b650.gpu_watts + b650.cpu_watts + 25)) / tot) * 100}%`;
         } else {
           dot650.className = 'led red';
+          for (const field of ['wall-watts', 'gpu-watts', 'cpu-watts', 'temps', 'cpu-pct']) document.getElementById(`b650-${field}`).innerText = '--';
+          document.querySelectorAll('[id^="bar-b650-"]').forEach(el => el.style.width = '0%');
         }
 
         // Node B450
@@ -1101,84 +1169,47 @@
           document.getElementById('bar-b450-psu').style.width = `${((tot450 - (b450.cpu_watts + 18)) / tot450) * 100}%`;
         } else {
           dot450.className = 'led red';
+          for (const field of ['wall-watts', 'cpu-watts', 'temps', 'cpu-pct']) document.getElementById(`b450-${field}`).innerText = '--';
+          document.querySelectorAll('[id^="bar-b450-"]').forEach(el => el.style.width = '0%');
         }
 
         // Oscillograph Update
-        if (data.recent_chart && data.recent_chart.length > 0) {
-          chartHistory = data.recent_chart;
-          drawOscillograph();
-        }
+        chartHistory = data.recent_chart || [];
+        drawOscillograph();
       } catch (err) {
-        console.error('Telemetry fetch error', err);
+        clearLiveReadings('Error al consultar telemetría. Reintentando…');
       }
     }
 
     function drawOscillograph() {
       const canvas = document.getElementById('oscillograph');
       const ctx = canvas.getContext('2d');
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.scale(dpr, dpr);
-
-      const w = rect.width;
-      const h = rect.height;
-
-      ctx.fillStyle = '#0d1117';
-      ctx.fillRect(0, 0, w, h);
-
-      // CRT Phosphor Grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
-      ctx.lineWidth = 1;
-      for (let y = 0; y < h; y += 28) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
+      const rect = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr);
+      const w = rect.width, h = rect.height, left = 45, right = 12, top = 15, bottom = 30;
+      ctx.fillStyle = '#f8fafb'; ctx.fillRect(0, 0, w, h);
+      ctx.font = '11px Inter, sans-serif'; ctx.fillStyle = '#536673';
+      if (chartHistory.length < 2) { ctx.fillText('Sin suficientes datos para mostrar historial', left, h / 2); return; }
+      const values = chartHistory.flatMap(p => [p.total_w, p.b650_w, p.b450_w]).filter(Number.isFinite);
+      const max = Math.max(50, Math.ceil(Math.max(0, ...values) / 50) * 50);
+      for (let i = 0; i <= 4; i++) {
+        const y = top + (h-top-bottom)*i/4;
+        ctx.strokeStyle = '#dfe7eb'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(w-right,y); ctx.stroke();
+        ctx.fillStyle = '#536673'; ctx.fillText(String(Math.round(max*(4-i)/4)), 5, y+4);
       }
-      for (let x = 0; x < w; x += 36) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
-        ctx.stroke();
+      const first = chartHistory[0].t, last = chartHistory[chartHistory.length-1].t;
+      if (Number.isFinite(first) && Number.isFinite(last)) {
+        const fmt = t => new Date(t * 1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        ctx.fillText(fmt(first), left, h-7); const text = fmt(last); ctx.fillText(text, w-right-ctx.measureText(text).width, h-7);
       }
-
-      if (chartHistory.length < 2) return;
-
-      let maxW = 200.0;
-      chartHistory.forEach(pt => {
-        if (pt.total_w > maxW) maxW = pt.total_w;
-      });
-      maxW = Math.ceil(maxW / 50) * 50;
-
-      // Draw Total (White glow)
-      drawLine(chartHistory.map(p => p.total_w), '#ffffff', 1.5, [3, 3]);
-      // Draw B650 (Braun Red / Safety Orange)
-      drawLine(chartHistory.map(p => p.b650_w), '#ff4757', 2.0);
-      // Draw B450 (Tech Blue)
-      drawLine(chartHistory.map(p => p.b450_w), '#3b82f6', 2.0);
-
-      function drawLine(points, color, width, dash = []) {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.setLineDash(dash);
-        ctx.beginPath();
-        points.forEach((val, i) => {
-          const x = (i / (chartHistory.length - 1)) * (w - 24) + 12;
-          const y = h - (val / maxW) * (h - 24) - 12;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        });
-        ctx.stroke();
-        ctx.setLineDash([]);
+      function line(key, color, dash) {
+        ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.setLineDash(dash); ctx.beginPath(); let drawing = false;
+        chartHistory.forEach((p,i) => { const value=p[key]; if (!Number.isFinite(value)) { drawing=false; return; }
+          const x=left+i/(chartHistory.length-1)*(w-left-right), y=top+(1-value/max)*(h-top-bottom);
+          if (drawing) ctx.lineTo(x,y); else ctx.moveTo(x,y); drawing=true;
+        }); ctx.stroke(); ctx.setLineDash([]);
       }
-
-      // Scale mark
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.font = '10px JetBrains Mono';
-      ctx.fillText(`MAX: ${maxW} W`, w - 90, 16);
+      line('total_w','#536673',[4,4]); line('b650_w','#b84738',[]); line('b450_w','#2563a0',[]);
     }
 
     function setPreset(name, node, watts, minutes, margin) {

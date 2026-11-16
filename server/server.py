@@ -187,9 +187,9 @@ def telemetry_aggregator_worker():
             # Append to running chart (max 60 points = 5 min at 5s interval)
             chart_entry = {
                 "t": int(now),
-                "b650_w": live_state["b650"]["wall_watts"],
-                "b450_w": live_state["b450"]["wall_watts"],
-                "total_w": round(live_state["b650"]["wall_watts"] + live_state["b450"]["wall_watts"], 1)
+                "b650_w": live_state["b650"]["wall_watts"] if live_state["b650"]["online"] else None,
+                "b450_w": live_state["b450"]["wall_watts"] if live_state["b450"]["online"] else None,
+                "total_w": round(live_state["b650"]["wall_watts"] + live_state["b450"]["wall_watts"], 1) if live_state["b650"]["online"] and live_state["b450"]["online"] else None
             }
             live_state["recent_chart"].append(chart_entry)
             if len(live_state["recent_chart"]) > 60:
@@ -263,20 +263,23 @@ class DashboardHTTPHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/api/status":
             marginal_rate = float(get_setting("marginal_rate", "105.25"))
-            total_w = live_state["b650"]["wall_watts"] + live_state["b450"]["wall_watts"]
-            cost_per_hour = (total_w / 1000.0) * marginal_rate
-            cost_per_day_proj = cost_per_hour * 24.0
+            complete = (0 < time.time() - live_state["last_poll"] <= 15 and
+                        all(live_state[node]["online"] for node in ("b650", "b450")))
+            total_w = (live_state["b650"]["wall_watts"] + live_state["b450"]["wall_watts"]) if complete else None
+            cost_per_hour = (total_w / 1000.0) * marginal_rate if complete else None
+            cost_per_day_proj = cost_per_hour * 24.0 if complete else None
             
             resp = {
                 "status": "ok",
                 "timestamp": time.time(),
+                "last_poll": live_state["last_poll"],
                 "nodes": {
                     "b650": live_state["b650"],
                     "b450": live_state["b450"]
                 },
-                "total_wall_watts": round(total_w, 1),
-                "cost_per_hour_colones": round(cost_per_hour, 2),
-                "cost_per_day_proj_colones": round(cost_per_day_proj, 2),
+                "total_wall_watts": round(total_w, 1) if complete else None,
+                "cost_per_hour_colones": round(cost_per_hour, 2) if complete else None,
+                "cost_per_day_proj_colones": round(cost_per_day_proj, 2) if complete else None,
                 "today_kwh": live_state["today_kwh"],
                 "today_cost_colones": live_state["today_cost"],
                 "marginal_rate": marginal_rate,
